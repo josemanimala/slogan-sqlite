@@ -3,7 +3,7 @@ Sqlite3 interface for Slogan
 
 Sample code
 -----------
-``
+```
 define db = sqlite_open("db");
 
 define sql = "create table a(i)";
@@ -28,4 +28,4 @@ let loop (r = sqlite_step(db, stmt))
 
 sqlite_finalize(db, stmt);
 sqlite_close(db);
-``
+```
