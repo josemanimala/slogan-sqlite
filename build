@@ -1,0 +1,16 @@
+#!/bin/bash
+
+slogan_root=`cat /etc/slogan/root`
+out=slogan_sqlite3.so
+
+rm -f $out
+
+osname=`uname`
+incs="-I${slogan_root}/src/include -I${slogan_root}/platform/gsc/include"
+src="src/sqlite3.c src/wrapper.c"
+
+if [[ "$osname" == 'Linux' ]]; then
+    gcc -Wall -shared -fPIC $incs -o $out $src
+else # Darwin??
+    gcc -dynamiclib -Wl,-undefined -Wl,dynamic_lookup $incs -o $out $src
+fi
