@@ -1,16 +1,17 @@
 #!/bin/bash
-
 slogan_root=`cat /etc/slogan/root`
 out=slogan_sqlite3.so
-
+# clean up artifacts from the previous build
 rm -f $out
-
+rm -f *.o*
 osname=`uname`
-incs="-I${slogan_root}/src/include -I${slogan_root}/platform/gsc/include"
 src="src/sqlite3.c src/wrapper.c"
-
+# build the shared library
 if [[ "$osname" == 'Linux' ]]; then
-    gcc -Wall -shared -fPIC $incs -o $out $src
+    gcc -Wall -shared -fPIC -o $out $src
 else # Darwin??
-    gcc -dynamiclib -Wl,-undefined -Wl,dynamic_lookup $incs -o $out $src
+    gcc -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -o $out $src
 fi
+# compile slogan source files to object code.
+# all files loaded by "init.sn" will be compiled too.
+slogan -c "init"
